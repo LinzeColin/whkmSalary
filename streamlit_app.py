@@ -76,7 +76,14 @@ df_weights = (
 df_weights["权重(%)"] = (df_weights["权重"] * 100).round(2).astype(str) + "%"
 
 st.subheader(f"📊 {province}省项目指标权重表")
-st.dataframe(df_weights, use_container_width=True, hide_index=True)
+styler = (
+    df_weights[["指标", "权重", "权重(%)"]]
+    .style
+    .set_properties(**{"text-align": "center"})
+    .set_table_styles([{"selector": "th", "props": [("text-align", "center")]}])
+)
+st.dataframe(styler, use_container_width=True, hide_index=True)
+st.table(styler)
 st.info(f"提示：当前省份为 {province}，权重总和为 {sum(weights.values()):.2f}。")
 
 # ---------------- 输入区 ----------------
