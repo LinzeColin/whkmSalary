@@ -79,11 +79,11 @@ st.subheader(f"📊 {province}省项目指标权重表")
 styler = (
     df_weights[["指标", "权重", "权重(%)"]]
     .style
+    .hide(axis="index")
     .set_properties(**{"text-align": "center"})
     .set_table_styles([{"selector": "th", "props": [("text-align", "center")]}])
 )
 st.dataframe(styler, use_container_width=True, hide_index=True)
-st.table(styler)
 st.info(f"提示：当前省份为 {province}，权重总和为 {sum(weights.values()):.2f}。")
 
 # ---------------- 输入区 ----------------
@@ -109,7 +109,6 @@ tax_keep_rate = st.number_input("税后保留比例（默认 0.97）", min_value
 if st.button("开始计算"):
     try:
         res = calculate(
-            project=project,
             year_target=year_target,
             quarter_actual=quarter_actual,
             margin=margin,
