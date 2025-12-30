@@ -23,7 +23,8 @@ weights = {
     "开票率": 0.025,
     "回款率": 0.075,
     "审计偏差": 0.05,
-    "客情成本": 0.1}
+    "客情成本": 0.1,
+}
 
 # 转 DataFrame
 df_weights = (
@@ -33,32 +34,8 @@ df_weights = (
 )
 df_weights["权重(%)"] = (df_weights["权重"] * 100).round(2).astype(str) + "%"
 
-# ---------------- 页面样式 ----------------
-st.markdown("""
-    <style>
-        .title {
-            font-size: 26px;
-            font-weight: 700;
-            color: #2E86C1;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .subtitle {
-            font-size: 18px;
-            font-weight: 500;
-            color: #555;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .stDataFrame table {
-            border-radius: 12px;
-            border: 1px solid #ccc;
-        }
-    </style>
-""", unsafe_allow_html=True)
 # ---------------- 页面内容 ----------------
-st.markdown('<div class="title">📊 项目指标权重表</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">各指标在季度绩效计算中的权重分布</div>', unsafe_allow_html=True)
+st.subheader("📊 项目指标权重表")
 st.dataframe(
     df_weights[["指标", "权重", "权重(%)"]],
     use_container_width=True,
@@ -70,7 +47,7 @@ col1, col2 = st.columns(2)
 with col1:
     year_target = st.number_input("年度目标产值", min_value=0.0, value=5000000.0, step=10000.0, format="%.2f")
     quarter_actual = st.number_input("实际季度业绩", min_value=0.0, value=250000.0, step=10000.0, format="%.2f")
-    margin = st.number_input("毛利率（如-0.05）",min_value=-3.0,max_value=1.0,value=0.25,step=0.01,format="%.4f")
+    margin = st.number_input("毛利率（如 -0.05）", min_value=-3.0, max_value=1.0, value=0.25, step=0.01, format="%.4f")
 with col2:
     settlement_days = st.number_input("结算时间（工作日）", min_value=0, value=10, step=1)
     invoice_days = st.number_input("开票时间（工作日）", min_value=0, value=10, step=1)
