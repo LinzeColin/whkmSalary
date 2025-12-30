@@ -14,17 +14,57 @@ st.title("武汉开明销售部季度绩效工资计算")
 st.caption("填表 → 一键计算 → 输出明细与汇总")
 
 project = st.selectbox("项目名称", list(projects.keys()))
-import pandas as pd
 
-# weights 是你的 dict，比如 {"业绩":0.3, "毛利率":0.35, ...}
+# ---------------- 权重定义 ----------------
+weights = {
+    "业绩": 0.3,
+    "毛利率": 0.35,
+    "结算率": 0.1,
+    "开票率": 0.025,
+    "回款率": 0.075,
+    "审计偏差": 0.05,
+    "客情成本": 0.1}
+
+# 转 DataFrame
 df_weights = (
     pd.Series(weights, name="权重")
       .rename_axis("指标")
-      .reset_index())
-st.subheader("该项目权重")
+      .reset_index()
+)
 df_weights["权重(%)"] = (df_weights["权重"] * 100).round(2).astype(str) + "%"
-st.dataframe(df_weights[["指标", "权重(%)"]], hide_index=True, use_container_width=True)
 
+# ---------------- 页面样式 ----------------
+st.markdown("""
+    <style>
+        .title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2E86C1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            font-size: 18px;
+            font-weight: 500;
+            color: #555;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .stDataFrame table {
+            border-radius: 12px;
+            border: 1px solid #ccc;
+        }
+    </style>
+""", unsafe_allow_html=True)
+# ---------------- 页面内容 ----------------
+st.markdown('<div class="title">📊 项目指标权重表</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">各指标在季度绩效计算中的权重分布</div>', unsafe_allow_html=True)
+st.dataframe(
+    df_weights[["指标", "权重", "权重(%)"]],
+    use_container_width=True,
+    hide_index=True
+)
+st.info("提示：权重总和为 1.0，毛利率可为负，代表亏损项目的情况。")
 
 col1, col2 = st.columns(2)
 with col1:
