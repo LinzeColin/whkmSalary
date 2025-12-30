@@ -8,19 +8,29 @@ import streamlit as st
 
 from salary_logic import projects, calculate
 
-st.set_page_config(page_title="季度绩效工资计算", layout="centered")
+st.set_page_config(page_title="武汉开明销售部季度绩效工资计算", layout="centered")
 
-st.title("季度绩效工资计算器")
+st.title("武汉开明销售部季度绩效工资计算")
 st.caption("填表 → 一键计算 → 输出明细与汇总")
 
 project = st.selectbox("项目名称", list(projects.keys()))
-st.write("该项目权重：", projects[project])
+import pandas as pd
+
+# weights 是你的 dict，比如 {"业绩":0.3, "毛利率":0.35, ...}
+df_weights = (
+    pd.Series(weights, name="权重")
+      .rename_axis("指标")
+      .reset_index())
+st.subheader("该项目权重")
+df_weights["权重(%)"] = (df_weights["权重"] * 100).round(2).astype(str) + "%"
+st.dataframe(df_weights[["指标", "权重(%)"]], hide_index=True, use_container_width=True)
+
 
 col1, col2 = st.columns(2)
 with col1:
-    year_target = st.number_input("年度目标产值", min_value=0.0, value=1000000.0, step=10000.0, format="%.2f")
+    year_target = st.number_input("年度目标产值", min_value=0.0, value=5000000.0, step=10000.0, format="%.2f")
     quarter_actual = st.number_input("实际季度业绩", min_value=0.0, value=250000.0, step=10000.0, format="%.2f")
-    margin = st.number_input("毛利率（0-1）", min_value=0.0, max_value=1.0, value=0.25, step=0.01, format="%.4f")
+    margin = st.number_input("毛利率（如-0.05）",min_value=-3.0,max_value=1.0,value=0.25,step=0.01,format="%.4f")
 with col2:
     settlement_days = st.number_input("结算时间（工作日）", min_value=0, value=10, step=1)
     invoice_days = st.number_input("开票时间（工作日）", min_value=0, value=10, step=1)
