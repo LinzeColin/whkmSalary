@@ -62,65 +62,64 @@ def score_performance(rate: float) -> float:
 
 def score_margin(rate: float) -> float:
     if rate < 0.1:
-        return min(0, 0 - (0.1 - rate) * 500)
+        return min(0, 0 - (0.1 - rate) * 800)
     elif 0.1 <= rate <= 0.25:
         return (rate - 0.1) * 200
     elif 0.25 < rate <= 0.5:
-        return 30 + (rate - 0.25) * 200
+        return 30 + (rate - 0.25) * 400
     else:
-        return min(100, 100 + (rate - 0.5) * 200)
+        return min(100, 100 + (rate - 0.5) * 500)
 
 
 def score_settlement(days: int) -> float:
-    if days >= 30:
-        return min(-200, -200 - (days - 30) * 20)
-    if 21 <= days < 30:
-        return min(20, 20 - (days - 20) * 10)
-    if 1 < days <= 20:
+    if days >= 60:
+        return min(-100, -100 - (days - 30) * 5)
+    if 20 <= days < 60:
         return min(100, 100 - (days - 20) * 5)
+    if 1 < days < 20:
+        return min(200, 200 - (days) * 5)
     elif days == 1:
-        return 200
-    else:
         return 200
 
 
 def score_invoice(days: int) -> float:
     if days > 60:
-        return min(-200, -200 - (days - 60) * 50)
+        return min(-300, -300 - (days - 60) * 50)
     if 20 < days <= 60:
-        return min(-50, -50 - (days - 20) * 5)
-    if 1 < days <= 20:
-        return min(80, 80 - (days - 20) * 4)
+        return min(0, 0 - (days - 20) * 5)
+    if 5 < days <= 20:
+        return min(125, 125 - (days - 5) * 8)
+    if 1 < days <= 5:
+        return min(150, 150 - (days) * 5)
     if days == 1:
-        return 200
-    return 200
+        return 150
 
 
 def score_payback(days: int) -> float:
-    if days > 365:
-        return min(-200, -200 - (days - 365) * 0.5)
-    if 90 < days <= 365:
-        return min(10, 10 - (days - 90) * 0.3)
-    if 1 < days <= 90:
-        return min(120, 120 - (days - 90) * 1.0)
+    if days > 60:
+        return min(-10, -10 - (days - 60) * 1)
+    if 20 < days <= 60:
+        return min(150, 150 - (days - 20) * 4)
+    if 1 < days <= 20:
+        return min(200, 200 - (days) * 2.5)
     if days == 1:
         return 200
-    return 200
 
 
 def score_audit_bias(rate: float) -> float:
-    if rate > 0.03:
-        return min(-50, -50 - (rate - 0.03) * 4000)
-    if 0.01 <= rate <= 0.03:
-        return min(0, 0 - (rate - 0.01) * 2000)
-    return min(80, 80 - (rate - 0.03) * 4000)
+    if 0.02 <= rate <= 0.08:
+        return min(60, 60 - (rate - 0.02) * 10000)
+    if rate <= 0.02:
+        return min(120, 120 - (rate * 3000)
+    if rate > 0.08:
+        return min(0, 0 - (rate - 0.08) * 800)
 
 
 def score_customer_cost(rate: float) -> float:
-    if rate > 0.05:
-        return min(-50, -50 - (rate - 0.05) * 2000)
-    if 0.03 <= rate <= 0.05:
-        return min(0, 0 - (rate - 0.03) * 2000)
+    if rate > 0.03:
+        return min(45, 45 - (rate - 0.03) * 4000)
+    if 0 <= rate <= 0.03:
+        return min(120, 120 - (rate) * 2500)
     return min(120, 120 - (rate - 0.03) * 4000)
 
 
