@@ -110,7 +110,7 @@ def score_audit_bias(rate: float) -> float:
     if 0.02 <= rate <= 0.08:
         return min(60, 60 - (rate - 0.02) * 10000)
     if rate <= 0.02:
-        return min(120, 120 - (rate * 3000)
+        return min(120, 120 - (rate * 3000))
     if rate > 0.08:
         return min(0, 0 - (rate - 0.08) * 800)
 
