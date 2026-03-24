@@ -26,3 +26,4 @@
 +            "$url")
 +          echo "HTTP: $code"
 +          test "$code" = "200"
+
